@@ -1,7 +1,7 @@
 import { Container } from "./styles";
 
-const Home: React.FC = () => {
+const Dashboard: React.FC = () => {
   return <Container>prof</Container>;
 };
 
-export default Home;
+export default Dashboard;

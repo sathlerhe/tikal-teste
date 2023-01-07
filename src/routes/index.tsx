@@ -1,10 +1,11 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import Home from "../pages/Home";
-import Professor from "../pages/Professor";
 import Layout from "../container/Layout";
 import StudentLogin from "../pages/StudentLogin";
 import ProfessorLogin from "../pages/ProfessorLogin";
+import { RequireAuth } from "../contexts/Auth/RequireAuth";
+import Dashboard from "../pages/Dashboard";
 
 const AppRoutes = () => {
   return (
@@ -12,7 +13,14 @@ const AppRoutes = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/professor" element={<Professor />} />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
           <Route path="/student-login" element={<StudentLogin />} />
           <Route path="/professor-login" element={<ProfessorLogin />} />
         </Routes>

@@ -1,12 +1,30 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button";
 import ImageContainer from "../../container/ImageContainer";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { Container, LoginContainer, Input, InputContainer } from "./styles";
 
 const ProfessorLogin: React.FC = () => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState<any>();
   const [password, setPassword] = useState<any>();
+
+  const handleProfLogin = async () => {
+    if (email && password) {
+      const isLogged = await auth.login(email, password, "professor");
+      console.log(isLogged);
+      if (isLogged) {
+        console.log(isLogged);
+        navigate("/dashboard");
+      } else {
+        alert("Login inválido.");
+      }
+    }
+  };
 
   return (
     <Container>
@@ -34,7 +52,9 @@ const ProfessorLogin: React.FC = () => {
               />
             </InputContainer>
 
-            <Button className="login__button">Entrar</Button>
+            <Button onClick={handleProfLogin} className="login__button">
+              Entrar
+            </Button>
           </form>
         </LoginContainer>
       </ImageContainer>

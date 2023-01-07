@@ -4,9 +4,14 @@ import { Container } from "./styles";
 interface IButton {
   children: ReactNode;
   className?: string;
+  onClick?: () => {};
 }
-const Button: React.FC<IButton> = ({ children, className }) => {
-  return <Container className={className}>{children}</Container>;
+const Button: React.FC<IButton> = ({ children, className, onClick }) => {
+  return (
+    <Container onClick={onClick} className={className}>
+      {children}
+    </Container>
+  );
 };
 
 export default Button;

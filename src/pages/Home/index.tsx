@@ -18,7 +18,9 @@ const Home: React.FC = () => {
       <ImageContainer>
         <LinksContainer>
           {links?.map((link, index) => (
-            <LinkComponent to={link?.link}>{link?.name}</LinkComponent>
+            <LinkComponent key={index} to={link?.link}>
+              {link?.name}
+            </LinkComponent>
           ))}
         </LinksContainer>
       </ImageContainer>

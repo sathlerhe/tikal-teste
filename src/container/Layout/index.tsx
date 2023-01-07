@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
 
 import HeaderLogged from "../HeaderLogged";
 import HeaderUnlogged from "../HeaderUnlogged";
@@ -8,10 +9,11 @@ interface ILayout {
   children: ReactNode;
 }
 const Layout: React.FC<ILayout> = ({ children }) => {
-  const logged = true;
+  const auth = useContext(AuthContext);
+  const isLogged = auth.user;
   return (
     <Container>
-      {logged ? <HeaderLogged /> : <HeaderUnlogged />}
+      {isLogged ? <HeaderLogged /> : <HeaderUnlogged />}
       {children}
     </Container>
   );
