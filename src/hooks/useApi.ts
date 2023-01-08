@@ -1,8 +1,7 @@
 import axios from "axios";
-import { Console } from "console";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 300000,
   timeoutErrorMessage: "timeout",
 });
@@ -11,22 +10,32 @@ export const useApi = () => ({
   validateToken: async (token: string, userType: string) => {
     if (userType === "professor") {
       try {
-        await api.get("/adm/student");
+        await api.get("/adm/student", {
+          headers: {
+            Authorization: `Bearer: ${token}`,
+          },
+        });
       } catch (err) {
         console.log(err);
       }
     } else if (userType === "student") {
       try {
-        await api.get("/aluno/score");
+        await api.get("/aluno/score", {
+          headers: {
+            Authorization: `Bearer: ${token}`,
+          },
+        });
       } catch (err) {
         console.log(err);
       }
     }
   },
   login: async (email: string, password: string, userType: string) => {
+    console.log("login");
     if (userType === "professor") {
+      console.log("prof login");
       try {
-        console.log(email, password);
+        console.log("try");
         const response = await api.post("/adm/admin/login", {
           email,
           password,

@@ -14,13 +14,15 @@ const ProfessorLogin: React.FC = () => {
   const [password, setPassword] = useState<any>();
 
   const handleProfLogin = async () => {
+    console.log("in prof function");
     if (email && password) {
+      console.log("email and password confirmed");
       const isLogged = await auth.login(email, password, "professor");
       console.log(isLogged);
       if (isLogged) {
-        console.log(isLogged);
         navigate("/dashboard");
       } else {
+        console.log("else");
         alert("Login inválido.");
       }
     }
@@ -52,7 +54,7 @@ const ProfessorLogin: React.FC = () => {
               />
             </InputContainer>
 
-            <Button onClick={handleProfLogin} className="login__button">
+            <Button onClick={() => handleProfLogin()} className="login__button">
               Entrar
             </Button>
           </form>
