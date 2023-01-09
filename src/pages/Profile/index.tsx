@@ -15,7 +15,10 @@ const Profile: React.FC = () => {
       <ProfileBox>
         <p>Name: {auth.user?.name}</p>
         <p>Email: {auth.user?.email}</p>
-        <p>Tipo de cadastro: {auth.user?.userType}</p>
+        <p>
+          Tipo de cadastro:{" "}
+          {auth.user?.userType === "professor" ? "Professor" : "Aluno"}
+        </p>
 
         <Button className="button__profile" onClick={handleLogout}>
           Sair

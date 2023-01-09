@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     if (userType === "professor") {
       if (data?.admin && data?.token) {
         setUser({
-          name: data?.admin.firstName + data?.admin.lastName,
+          name: data?.admin.firstName + " " + data?.admin.lastName,
           email: data?.admin.email,
           id: data?.admin.id,
           userType: userType,
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     } else if (userType === "student") {
       if (data?.student && data?.token) {
         setUser({
-          name: data.student.firstName + data.student.lastName,
+          name: data.student.firstName + " " + data.student.lastName,
           email: data.student.email,
           id: data.student.id,
           userType: userType,

@@ -1,6 +1,7 @@
 ## | Considerações iniciais
 
 Quando o usuário loga e atualiza a página, ele acaba perdendo o login, por conta de não existir a persistência dos dados dele. Não pude fazer essa persistência por conta de não existir uma rota no backend que fizesse a validação do token do usuário.
+A aplicação não está responsiva.
 
 ## | Rotas da aplicação
 
