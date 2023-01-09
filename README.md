@@ -30,10 +30,10 @@ Página onde o usuário poderá ver os seus dados e fazer sair da aplicação.
 
 Instala as dependências.
 
-### npm start
-
-Inicia a aplicação localmente.
-
 ### docker-compose up
 
 Inicia a aplicação dentro de um docker container.
+
+### npm start
+
+Inicia a aplicação localmente.
