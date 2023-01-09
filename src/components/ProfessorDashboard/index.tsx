@@ -21,7 +21,8 @@ const ProfessorDashboard: React.FC = () => {
         const professorRes: any = await api.callProfessor(auth.user?.token);
 
         for (let i: number = 0; professorRes.length >= i; i++) {
-          let name = professorRes[i]?.firstName + professorRes[i]?.lastName;
+          let name =
+            professorRes[i]?.firstName + " " + professorRes[i]?.lastName;
           professorRes[i]?.scores.map((score: any) => {
             let updated = format(new Date(score?.updatedAt), "dd-MM-yyyy");
             let updatedHour = format(new Date(score?.updatedAt), "hh:mm");
