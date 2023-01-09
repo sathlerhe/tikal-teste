@@ -3,65 +3,48 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
+import { useApi } from "../../hooks/useApi";
 
 import { Container, SituationBox, Title, Input } from "./styles";
 
 const ProfessorDashboard: React.FC = () => {
-  let rows: Array<object> = [];
-  const studentRes = {
-    scores: [
-      {
-        n1: 5,
-        n2: 8,
-        n3: 9,
-        n4: 7,
-        average: 7.25,
-        situation: "Aprovado",
-      },
-      {
-        n1: 5,
-        n2: 8,
-        n3: 9,
-        n4: 7,
-        average: 7.25,
-        situation: "Aprovado",
-      },
-      {
-        n1: 5,
-        n2: 8,
-        n3: 9,
-        n4: 7,
-        average: 7.25,
-        situation: "Aprovado",
-      },
-      {
-        n1: 5,
-        n2: 8,
-        n3: 9,
-        n4: 7,
-        average: 7.25,
-        situation: "Aprovado",
-      },
-    ],
-  };
+  const auth = useContext(AuthContext);
+  const api = useApi();
+  const [rows, setRows] = useState<Array<object>>();
 
-  studentRes?.scores.map((score) => {
-    let n1 = score?.n1.toFixed(2);
-    let n2 = score?.n2.toFixed(2);
-    let n3 = score?.n3.toFixed(2);
-    let n4 = score?.n4.toFixed(2);
-    let average = score?.average.toFixed(2);
-    let situation = score?.situation;
+  useEffect(() => {
+    const handleCallProfessor = async () => {
+      if (auth.user) {
+        const studentRes: any = await api.callStudent(auth.user?.token);
 
-    return rows.push({
-      n1,
-      n2,
-      n3,
-      n4,
-      average,
-      situation,
-    });
-  });
+        studentRes?.scores.map((score: any) => {
+          let n1 = score?.n1.toFixed(2);
+          let n2 = score?.n2.toFixed(2);
+          let n3 = score?.n3.toFixed(2);
+          let n4 = score?.n4.toFixed(2);
+          let average = score?.average.toFixed(2);
+          let situation = score?.situation;
+
+          return setRows([
+            ...(rows ?? []),
+            {
+              n1,
+              n2,
+              n3,
+              n4,
+              average,
+              situation,
+            },
+          ]);
+        });
+      }
+    };
+
+    handleCallProfessor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>
@@ -84,7 +67,7 @@ const ProfessorDashboard: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row: any, index) => (
+          {rows?.map((row: any, index) => (
             <TableRow key={index} sx={{ borderRadius: 0, marginBottom: "8px" }}>
               <TableCell>{row?.n1}</TableCell>
               <TableCell>{row?.n2}</TableCell>

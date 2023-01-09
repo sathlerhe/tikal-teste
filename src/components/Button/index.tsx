@@ -4,7 +4,7 @@ import { Container } from "./styles";
 interface IButton {
   children: ReactNode;
   className?: string;
-  onClick?: () => {};
+  onClick?: () => void;
 }
 const Button: React.FC<IButton> = ({ children, className, onClick }) => {
   return (

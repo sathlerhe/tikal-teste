@@ -4,125 +4,56 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { format } from "date-fns";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
+import { useApi } from "../../hooks/useApi";
 
 import { Container, SituationBox, Title, Input, DateContainer } from "./styles";
 
 const ProfessorDashboard: React.FC = () => {
-  let rows: Array<object> = [];
-  const professorRes = [
-    {
-      id: "efb8db42-2336-4848-87d2-8a521f55f8f3",
-      createdAt: "2023-01-04T12:41:39.389Z",
-      updatedAt: "2023-01-04T12:41:39.389Z",
-      firstName: "Fábio",
-      lastName: "Fernandes",
-      email: "fabio@gmail.com",
-      scores: [
-        {
-          id: "a5c6ca49-4f2b-443b-90f4-6c7d2441aca0",
-          createdAt: "2023-01-04T12:41:39.405Z",
-          updatedAt: "2023-01-04T12:41:39.405Z",
-          n1: 5,
-          n2: 8,
-          n3: 9,
-          n4: 7,
-          average: 7.25,
-          situation: "Aprovado",
-        },
-        {
-          id: "a5c6ca49-4f2b-443b-90f4-6c7d2441aca0",
-          createdAt: "2023-01-04T12:41:39.405Z",
-          updatedAt: "2023-01-04T12:41:39.405Z",
-          n1: 5,
-          n2: 98,
-          n3: 9,
-          n4: 7,
-          average: 7.25,
-          situation: "Aprovado",
-        },
-      ],
-    },
-    {
-      id: "efb8db42-2336-4848-87d2-8a521f55f8f3",
-      createdAt: "2023-01-04T12:41:39.389Z",
-      updatedAt: "2023-01-04T12:41:39.389Z",
-      firstName: "Fábio",
-      lastName: "Fernandes",
-      email: "fabio@gmail.com",
-      scores: [
-        {
-          id: "a5c6ca49-4f2b-443b-90f4-6c7d2441aca0",
-          createdAt: "2023-01-04T12:41:39.405Z",
-          updatedAt: "2023-01-04T12:41:39.405Z",
-          n1: 5,
-          n2: 8,
-          n3: 9,
-          n4: 7,
-          average: 7.25,
-          situation: "Aprovado",
-        },
-      ],
-    },
-    {
-      id: "efb8db42-2336-4848-87d2-8a521f55f8f3",
-      createdAt: "2023-01-04T12:41:39.389Z",
-      updatedAt: "2023-01-04T12:41:39.389Z",
-      firstName: "Fábio",
-      lastName: "Fernandes",
-      email: "fabio@gmail.com",
-      scores: [
-        {
-          id: "a5c6ca49-4f2b-443b-90f4-6c7d2441aca0",
-          createdAt: "2023-01-04T12:41:39.405Z",
-          updatedAt: "2023-01-04T12:41:39.405Z",
-          n1: 5,
-          n2: 8,
-          n3: 9,
-          n4: 7,
-          average: 7.25,
-          situation: "Reprovado",
-        },
-        {
-          id: "a5c6ca49-4f2b-443b-90f4-6c7d2441aca0",
-          createdAt: "2023-01-04T12:41:39.405Z",
-          updatedAt: "2023-01-04T12:41:39.405Z",
-          n1: 55,
-          n2: 8,
-          n3: 9,
-          n4: 7,
-          average: 7.25,
-          situation: "Reprovado",
-        },
-      ],
-    },
-  ];
+  const auth = useContext(AuthContext);
+  const api = useApi();
+  const [rows, setRows] = useState<Array<object>>();
 
-  for (let i: number = 0; professorRes.length >= i; i++) {
-    let name = professorRes[i]?.firstName + professorRes[i]?.lastName;
+  useEffect(() => {
+    const handleCallProfessor = async () => {
+      if (auth.user) {
+        const professorRes: any = await api.callProfessor(auth.user?.token);
 
-    professorRes[i]?.scores.map((score) => {
-      let updated = format(new Date(score?.updatedAt), "dd-MM-yyyy");
-      let updatedHour = format(new Date(score?.updatedAt), "hh:mm");
-      let n1 = score?.n1.toFixed(2);
-      let n2 = score?.n2.toFixed(2);
-      let n3 = score?.n3.toFixed(2);
-      let n4 = score?.n4.toFixed(2);
-      let average = score?.average.toFixed(2);
-      let situation = score?.situation;
+        for (let i: number = 0; professorRes.length >= i; i++) {
+          let name = professorRes[i]?.firstName + professorRes[i]?.lastName;
+          professorRes[i]?.scores.map((score: any) => {
+            let updated = format(new Date(score?.updatedAt), "dd-MM-yyyy");
+            let updatedHour = format(new Date(score?.updatedAt), "hh:mm");
+            let n1 = score?.n1.toFixed(2);
+            let n2 = score?.n2.toFixed(2);
+            let n3 = score?.n3.toFixed(2);
+            let n4 = score?.n4.toFixed(2);
+            let average = score?.average.toFixed(2);
+            let situation = score?.situation;
 
-      return rows.push({
-        name,
-        updated,
-        updatedHour,
-        n1,
-        n2,
-        n3,
-        n4,
-        average,
-        situation,
-      });
-    });
-  }
+            return setRows([
+              ...(rows ?? []),
+              {
+                name,
+                updated,
+                updatedHour,
+                n1,
+                n2,
+                n3,
+                n4,
+                average,
+                situation,
+              },
+            ]);
+          });
+        }
+      }
+    };
+
+    handleCallProfessor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>
@@ -147,7 +78,7 @@ const ProfessorDashboard: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row: any, index) => (
+          {rows?.map((row: any, index: any) => (
             <TableRow key={index} sx={{ borderRadius: 0, marginBottom: "8px" }}>
               <TableCell>{row?.name}</TableCell>
               <TableCell>

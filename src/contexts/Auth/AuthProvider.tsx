@@ -11,34 +11,40 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     const data = await api.login(email, password, userType);
 
     if (userType === "professor") {
-      console.log(data);
-      if (data?.admin && data.token) {
+      if (data?.admin && data?.token) {
         setUser({
-          name: data?.admin.name,
+          name: data?.admin.firstName + data?.admin.lastName,
           email: data?.admin.email,
           id: data?.admin.id,
           userType: userType,
+          token: data.token,
         });
+        // setToken(data.token);
         return true;
       }
     } else if (userType === "student") {
-      if (data?.student && data.token) {
+      if (data?.student && data?.token) {
         setUser({
-          name: data.student.name,
+          name: data.student.firstName + data.student.lastName,
           email: data.student.email,
           id: data.student.id,
           userType: userType,
+          token: data.token,
         });
+        // setToken(data.token);
+        return true;
       }
-      return true;
     }
-
     return false;
   };
 
   const logout = () => {
     setUser(null);
   };
+
+  // const setToken = (token: string) => {
+  //   localStorage.setItem("authToken", token);
+  // };
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

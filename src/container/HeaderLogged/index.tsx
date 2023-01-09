@@ -1,9 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 
 import { Container, NavContainer, Nav } from "./styles";
 
 const HeaderLogged: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
   const links = [
     {
       link: "#",
@@ -22,7 +28,9 @@ const HeaderLogged: React.FC = () => {
   return (
     <Container>
       <NavContainer>
-        <img src="/assets/logo.svg" alt="Escola Mundial" />
+        <Link to="/dashboard">
+          <img src="/assets/logo.svg" alt="Escola Mundial" />
+        </Link>
         <Nav>
           {links?.map((link, index) => (
             <Link to={link?.link} key={index}>
@@ -32,7 +40,7 @@ const HeaderLogged: React.FC = () => {
         </Nav>
       </NavContainer>
 
-      <Button>Perfil</Button>
+      <Button onClick={() => handleNavigate("/profile")}>Perfil</Button>
     </Container>
   );
 };

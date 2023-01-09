@@ -5,29 +5,7 @@ const api = axios.create({
 });
 
 export const useApi = () => ({
-  validateToken: async (token: string, userType: string) => {
-    if (userType === "professor") {
-      try {
-        await api.get("/adm/student", {
-          headers: {
-            Authorization: `Bearer: ${token}`,
-          },
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    } else if (userType === "student") {
-      try {
-        await api.get("/aluno/score", {
-          headers: {
-            Authorization: `Bearer: ${token}`,
-          },
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  },
+  validateToken: async (token: string, userType: string) => {},
   login: async (email: string, password: string, userType: string) => {
     if (userType === "professor") {
       const options = {
@@ -35,28 +13,66 @@ export const useApi = () => ({
         url: process.env.REACT_APP_BASE_URL + "/adm/admin/login",
         headers: { "content-type": "application/json" },
         data: {
-          email: email,
-          password: password,
+          email,
+          password,
         },
       };
 
-      console.log(email, password, userType);
-
-      axios
+      const res = await axios
         .request(options)
         .then((response) => {
-          console.log(response.data);
           return response.data;
         })
         .catch(function (error) {
           return console.error(error);
         });
+
+      return res;
     } else if (userType === "student") {
-      const response = await api.post("/aluno/student/login", {
-        email,
-        password,
+      const options = {
+        method: "POST",
+        url: process.env.REACT_APP_BASE_URL + "/aluno/student/login",
+        headers: { "content-type": "application/json" },
+        data: {
+          email,
+          password,
+        },
+      };
+
+      const res = await axios
+        .request(options)
+        .then((response) => {
+          return response.data;
+        })
+        .catch(function (error) {
+          return console.error(error);
+        });
+
+      return res;
+    }
+  },
+  callProfessor: async (token: string) => {
+    try {
+      const res = await api.get("/adm/student", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      return response.data;
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  callStudent: async (token: string) => {
+    try {
+      const res = await api.get("/aluno/score", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    } catch (err) {
+      console.log(err);
     }
   },
 });

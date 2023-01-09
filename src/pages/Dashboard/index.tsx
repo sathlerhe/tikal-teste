@@ -1,12 +1,19 @@
+import { useContext } from "react";
 import ProfessorDashboard from "../../components/ProfessorDashboard";
 import StudentDashboard from "../../components/StudentDashboard";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { Container } from "./styles";
 
 const Dashboard: React.FC = () => {
-  const userType: string = "professor";
+  const auth = useContext(AuthContext);
+
   return (
     <Container>
-      {userType === "professor" ? <ProfessorDashboard /> : <StudentDashboard />}
+      {auth.user?.userType === "professor" ? (
+        <ProfessorDashboard />
+      ) : (
+        <StudentDashboard />
+      )}
     </Container>
   );
 };

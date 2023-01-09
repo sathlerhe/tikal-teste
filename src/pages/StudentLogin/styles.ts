@@ -14,7 +14,7 @@ export const LoginContainer = styled("div", {
     fontWeight: "$light",
   },
 
-  ">form": {
+  ">div": {
     width: "100%",
     display: "flex",
     flexDirection: "column",
