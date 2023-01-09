@@ -10,8 +10,8 @@ const ProfessorLogin: React.FC = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<any>();
-  const [password, setPassword] = useState<any>();
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
 
   const handleProfLogin = async () => {
     console.log("in prof function");
@@ -41,7 +41,6 @@ const ProfessorLogin: React.FC = () => {
                 type="email"
                 placeholder="exemplo@email.com"
                 onChange={(e) => setEmail(e?.target?.value)}
-                required
               />
             </InputContainer>
             <InputContainer>
@@ -50,7 +49,6 @@ const ProfessorLogin: React.FC = () => {
                 type="password"
                 placeholder="Sua senha"
                 onChange={(e) => setPassword(e?.target?.value)}
-                required
               />
             </InputContainer>
 

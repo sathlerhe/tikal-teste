@@ -2,8 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 300000,
-  timeoutErrorMessage: "timeout",
 });
 
 export const useApi = () => ({
@@ -31,20 +29,28 @@ export const useApi = () => ({
     }
   },
   login: async (email: string, password: string, userType: string) => {
-    console.log("login");
     if (userType === "professor") {
-      console.log("prof login");
-      try {
-        console.log("try");
-        const response = await api.post("/adm/admin/login", {
-          email,
-          password,
+      const options = {
+        method: "POST",
+        url: process.env.REACT_APP_BASE_URL + "/adm/admin/login",
+        headers: { "content-type": "application/json" },
+        data: {
+          email: email,
+          password: password,
+        },
+      };
+
+      console.log(email, password, userType);
+
+      axios
+        .request(options)
+        .then((response) => {
+          console.log(response.data);
+          return response.data;
+        })
+        .catch(function (error) {
+          return console.error(error);
         });
-        console.log(response);
-        return response.data;
-      } catch (err) {
-        console.log(err);
-      }
     } else if (userType === "student") {
       const response = await api.post("/aluno/student/login", {
         email,

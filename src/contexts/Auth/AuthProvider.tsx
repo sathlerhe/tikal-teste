@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     const data = await api.login(email, password, userType);
 
     if (userType === "professor") {
+      console.log(data);
       if (data?.admin && data.token) {
         setUser({
           name: data?.admin.name,
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         return true;
       }
     } else if (userType === "student") {
-      if (data.student && data.token) {
+      if (data?.student && data.token) {
         setUser({
           name: data.student.name,
           email: data.student.email,
